@@ -1,0 +1,3 @@
+﻿  Set.cpp
+D:\ADT\SetVS\SetVS\Set.cpp(114,2): warning C4154: deletion of an array expression; conversion to pointer supplied
+  SetVS.vcxproj -> D:\ADT\SetVS\x64\Debug\SetVS.exe
