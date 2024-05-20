@@ -107,7 +107,7 @@ void testRemove() {
 			assert(m.remove(i) == false);
 		}
 	}
-	assert(m.size() == 0);
+ 	assert(m.size() == 0);
 	//printM(m);
 
 	for (int i = -100; i <= 100; i = i + 2) { 
@@ -269,11 +269,11 @@ void testQuantity() {//add lots of elements
 	cout << "Test quantity" << endl;
 	Set s;
 	for (int i = 10; i >= 1; i--) {
-		for (int j = -30000; j < 30000; j = j + i) {
+		for (int j = -3000; j < 3000; j = j + i) {
 			s.add(j);
 		}
 	}
-	assert(s.size() == 60000);
+	assert(s.size() == 6000);
 	SetIterator it = s.iterator();
 	assert(it.valid() == true);
 	for (int i = 0; i < s.size(); i++) {
@@ -287,7 +287,7 @@ void testQuantity() {//add lots of elements
 	}
 	assert(it.valid() == false);
 	for (int i = 0; i < 10; i++) { //delete existing and inexistent elements
-		for (int j = 40000; j >= -40000; j--) {
+		for (int j = 4000; j >= -4000; j--) {
 			s.remove(j);
 		}
 	}

@@ -1,49 +1,75 @@
 #include "Set.h"
 #include "SetITerator.h"
 
-//complexity: o(n)
+//complexity: o(1)
 Set::Set() {
 	//TODO - Implementation
+	this->length = 0;
+	this->capacity = 11;
 	//the list is empty
-	head = -1;
-	arr = new TElem[capacity];
-	//we initialize the list as an empty list
-	for (int i = 0; i < capacity - 1; i++)
-		nextLink[i] = -1;
-	nextLink[capacity - 1] = -1;
+	this->head = -1;
+	this->arr = new TElem[capacity];
+	this->nextLink = new int[capacity];
+	for (int i = 0; i < this->capacity - 1; i++)
+		this->nextLink[i] = i + 1;
+	this->nextLink[this->capacity - 1] = this->capacity;
 	//the first empty position
-	firstEmpty = 0;
+	this->firstEmpty = 0;
 }
 
 //complexity: o(n)
-int Set::allocate() {
-	int i = firstEmpty;
-	firstEmpty++;//we go on the next position to check if it is empty
-	while(nextLink[firstEmpty] != -1) {
-		firstEmpty++; //we go to the last pos in the list
+void Set::resize()
+{
+	this->capacity *= 2;
+	TElem* newarr = new TElem[this->capacity];
+	int* newnext = new int[this->capacity];
+	for (int i = 0; i < this->length; i++)
+	{
+		newarr[i] = this->arr[i];
+		newnext[i] = this->nextLink[i];
 	}
-	firstEmpty++; //the last pos should have an elemet so the first empty is the next one
+	for (int i = this->length; i < this->capacity - 1; i++)
+		newnext[i] = i + 1;
+	newnext[this->capacity - 1] = this->capacity;
+	delete[] this->arr;
+	delete[] this->nextLink;
+	this->arr = newarr;
+	this->nextLink = newnext;
+}
+
+//complexity: o(1)
+int Set::allocate() {
+	//we delete the first empty position from the list of empty positions
+	int i = this->firstEmpty;
+	this->firstEmpty = this->nextLink[this->firstEmpty];
 	return i;
 }
 
 //complexity: o(1)
 void Set::deallocate(int i) {
-	nextLink[i] = firstEmpty;
-	firstEmpty = i;
+	//we add the position at index i at the beginning of the list of empty positions
+	this->nextLink[i] = this->firstEmpty;
+	this->firstEmpty = i;
 }
 
-//complexity: o(1)
+//complexity: BEST:theta(1) WORST:theta(n) AVG:o(n)
 int Set::createNode(TElem elem) {
-	arr[firstEmpty] = elem;
-	int i = 0;
-	while (nextLink[i] != -1)
-		i++;
-	firstEmpty = i;
+	//Create one node having e as the useful information
+	int i = allocate();
+	this->length++;
+	if (i != -1) {
+		if (this->length == this->capacity)
+			resize();
+		this->arr[i] = elem;
+		this->nextLink[i] = -1;
+	}
+	return i;
 }
 
-//revede add pe creere de linkuri DON'T COPYPASTA
+//complexity: o(n)
 bool Set::add(TElem elem) {
 	//TODO - Implementation
+	//check if the element is already in the set
 	if(search(elem))
 		return false;
 	int i = this->createNode(elem);
@@ -70,14 +96,17 @@ bool Set::remove(TElem elem) {
 	if (!found)
 		return false;
 	else {
+		//we have to remove the element at index current
 		if (prev == -1)
 			this->head = this->nextLink[this->head];
 		else
 			this->nextLink[prev] = this->nextLink[current];
+		this->length = this->length - 1;
 		deallocate(current);
 		return true;
 	}
 }
+
 //complexity: o(n)
 bool Set::search(TElem elem) const {
 	//TODO - Implementation
@@ -105,7 +134,7 @@ int Set::size() const {
 //complexity: o(1)
 bool Set::isEmpty() const {
 	//TODO - Implementation
-	return (head == -1);
+	return (this->head == -1);
 }
 
 //complexity: o(1)

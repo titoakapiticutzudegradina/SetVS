@@ -12,12 +12,14 @@ class Set {
 
     private:
 		//TODO - Representation
-        static const int capacity = 180000; //fixed capacity number
+        int length;
+        int capacity; //capacity number
         TElem *arr; //array of elements;
-        int nextLink[capacity]; //array of next links;
+        int* nextLink; //array of next links;
         int head; //head of the list;
         int firstEmpty; //first empty position in the array;
 
+		void resize(); //resizes the array;
         int allocate(); //allocates a new position in the array;
         void deallocate(int i); //deallocates a position in the array;
         int createNode(TElem e); //creates a new node with the element e;

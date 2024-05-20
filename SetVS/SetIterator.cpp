@@ -36,7 +36,7 @@ TElem SetIterator::getCurrent()
 
 bool SetIterator::valid() const {
 	//TODO - Implementation
-	return (this->set.arr[this->current] != -1);
+	return (this->current != -1);
 }
 
 
